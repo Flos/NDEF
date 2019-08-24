@@ -1,5 +1,6 @@
 #include <NdefMessage.h>
 
+#define NDEF_DEBUG
 NdefMessage::NdefMessage(void)
 {
     _recordCount = 0;
@@ -52,6 +53,8 @@ NdefMessage::NdefMessage(const byte * data, const int numBytes)
             index += 4;
         }
 
+        
+
         int idLength = 0;
         if (il)
         {
@@ -67,6 +70,13 @@ NdefMessage::NdefMessage(const byte * data, const int numBytes)
         {
             record.setId(&data[index], idLength);
             index += idLength;
+        }
+
+        
+        if(payloadLength < 0  || payloadLength > numBytes) {
+            Serial.println("NdefMessage: " + String(index) + " PayloadLength " + String(payloadLength) + " something is wrong, stopping now");
+            payloadLength = 0; // Something is wrong better stop 
+            me = true; 
         }
 
         record.setPayload(&data[index], payloadLength);

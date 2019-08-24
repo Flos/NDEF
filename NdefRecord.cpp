@@ -48,21 +48,28 @@ NdefRecord::NdefRecord(const NdefRecord& rhs)
 
 NdefRecord::~NdefRecord()
 {
-    //Serial.println("NdefRecord Destructor");
-    if (_typeLength)
-    {
-        free(_type);
-    }
+    Serial.println("NdefRecord:");
+    // print();
+    Serial.println("NdefRecord1 Destructor " + String(_typeLength));
+    // if (_typeLength)
+    // {
+    //     free(_type);
+    // }
 
-    if (_payloadLength)
-    {
-        free(_payload);
-    }
 
-    if (_idLength)
-    {
-        free(_id);
-    }
+    // Serial.println("NdefRecord2 Destructor " + String(_payloadLength));
+    // if (_payloadLength)
+    // {
+    //     free(_payload);
+    // }
+
+    // Serial.println("NdefRecord3 Destructor " + String(_idLength));
+    // if (_idLength)
+    // {
+    //     free(_id);
+    // }
+
+    Serial.println("NdefRecord4 Destructor ");
 }
 
 NdefRecord& NdefRecord::operator=(const NdefRecord& rhs)
@@ -267,14 +274,31 @@ void NdefRecord::getPayload(byte *payload)
 
 void NdefRecord::setPayload(const byte * payload, const int numBytes)
 {
+
+
+    Serial.println("setPayloal: 1 " + String(numBytes));
+    if(numBytes < 0) return;
+
     if (_payloadLength)
     {
+
+        Serial.println("setPayloal: free ");
         free(_payload);
     }
 
+
+    Serial.println("setPayloal: free done");
     _payload = (byte*)malloc(numBytes);
+    Serial.println("setPayloal: malloc");
     memcpy(_payload, payload, numBytes);
+
+
+    
+    Serial.println("setPayloal: memcpy");
     _payloadLength = numBytes;
+
+    this->print();
+    Serial.println("setPayloal: done");
 }
 
 String NdefRecord::getId()
